@@ -5,9 +5,9 @@ from django.db import models
 
 class Page(models.Model):
     header = models.CharField(max_length=1000)
-    content1 = models.CharField(max_length=10000)
-    content2 = models.CharField(max_length=10000)
-    prompt = models.CharField(max_length=1000)
+    content1 = models.CharField(max_length=10000, default="")
+    content2 = models.CharField(max_length=10000, default="")
+    prompt = models.CharField(max_length=1000, default="")
 
 
     def toDict(self):
