@@ -23,3 +23,10 @@ def endpoint(request):
 def final(request):
     return render(request, 'light_house/final.html', {})
 
+def askGpt(task,content,language):
+    input = {"task":task, "text":content, "language":language}
+
+    url = "https://script.google.com/macros/s/AKfycbx_uPIrQMMoLMi4YOkIyU8nHGgcFUZIPO1Vkk6soo4a1AdVVl6Rzb-fJ7a7ifzTujc/exec"
+    response = requests.post(url, json=input)
+    response_dict = json.loads(response.text)
+    return response_dict["translated"]
