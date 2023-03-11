@@ -19,6 +19,12 @@ def index(request):
     output = ', '.join([q.header for q in latest_question_list])
     return HttpResponse(output)
 
+def options(request):
+    return render(request, 'light_house/options.html', {})
+
+def endpoint(request):
+    return render(request, 'light_house/endpoint.html', {})
+
 
 # ...
 # def detail(request):
