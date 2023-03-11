@@ -7,6 +7,14 @@ class Page(models.Model):
     header = models.CharField(max_length=1000)
     content = models.CharField(max_length=5000)
 
+    def toDict(self):
+        d = {
+            "header": self.header,
+            "content": self.content
+        }
+
+        return d
+
 
 # class Choice(models.Model):
 #     question = models.ForeignKey(Question, on_delete=models.CASCADE)
