@@ -12,9 +12,9 @@ from django.http import HttpResponse
 
 def index(request): 
     # return HttpResponse("Hello, world. You're at the _base_ index.")        / for testing 
-    template = loader.get_template('index.html')
+    # template = loader.get_template('index.html')
     # return HttpResponse(template.render(request))
-    return render(request,'index.html')
+    return render(request,'index.html',{})
 
 def askGpt(task,content,language):
     input = {"task":task, "text":content, "language":language}
