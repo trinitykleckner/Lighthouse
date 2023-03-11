@@ -7,11 +7,6 @@ from .models import Page
 
 
 
-# Create your views here.
-# def index(request):
-#     return HttpResponse("Hello TEST!!!!!")
-
-
 def index(request):
     page = Page.objects.order_by('-id')[0]
     return render(request, 'light_house/trial.html', {"page":page.toDict()})
@@ -24,12 +19,4 @@ def options(request):
 
 def endpoint(request):
     return render(request, 'light_house/endpoint.html', {})
-
-
-# ...
-# def detail(request):
-#     page = get_object_or_404(Page, pk=1)
-#     return render(request, 'polls/detail.html', {'page': page})
-
-
 
