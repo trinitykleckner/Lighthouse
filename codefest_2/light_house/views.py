@@ -20,3 +20,6 @@ def options(request):
 def endpoint(request):
     return render(request, 'light_house/endpoint.html', {})
 
+def final(request):
+    return render(request, 'light_house/final.html', {})
+

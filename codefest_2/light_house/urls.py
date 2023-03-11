@@ -6,7 +6,7 @@ app_name = "light_house"
 urlpatterns = [
     path('', views.index, name='index'),
     path('options',views.options,name='options'),
-    path('endpoint',views.endpoint,name='endpoint')
-    # path('<int:id>/',views.detail, name="detail")
+    path('endpoint',views.endpoint,name='endpoint'),
+    path('final',views.final,name='final'),
 ]
 
