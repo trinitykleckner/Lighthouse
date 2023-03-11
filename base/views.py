@@ -8,8 +8,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the _base_ index.")
+# def index(request):                                                         / for testing 
+#     return HttpResponse("Hello, world. You're at the _base_ index.")        / for testing 
 
 def askGpt(task,content,language):
     input = {"task":task, "text":content, "language":language}
