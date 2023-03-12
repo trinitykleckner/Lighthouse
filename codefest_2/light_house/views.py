@@ -42,7 +42,7 @@ def endpoint(request, index):
     pageDict = page.toDict()
     if request.session['language'] not in ["english", "null", None]:
         pageDict = translateDict(pageDict,request.session['language'])
-    gpt = askGpt("ask",page.content2[3:],request.session['language'])
+    gpt = askGpt("ask",page.content2[3:]+"in "+request.session['state'],request.session['language'])
     return render(request, 'light_house/endpoint.html', {"page":page.toDict(),"response":gpt})
 
 def final(request):
