@@ -17,13 +17,7 @@ class Page(models.Model):
             "options/response": self.content2,
             "prompt": self.prompt,
         }
-
         return d
 
-
-# class Choice(models.Model):
-#     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-#     choice_text = models.CharField(max_length=200)
-#     votes = models.IntegerField(default=0)
-
-
+    def getOptions(self):
+        return self.content2.split(",")

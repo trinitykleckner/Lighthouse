@@ -41,22 +41,23 @@
             <div class="container px-4 px-lg-5">
                 <h1 class="text-center mt-0">{{page.header}}</h1>
                 <hr class="divider" /> <br/> <br/>
-                <h4 class="text-center">{{page.content1}}</h4>
+                <h4 class="text-center">{{page.body}}</h4>
                 <div class="row gx-4 gx-lg-5">
-                    {% for item in content2 %}
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <div class="mt-5">
-                            <div class="mb-2">{{item.icon}}</div>
-                            <h3 class="h4 mb-2">{{item.header}}</h3>
-                            <p class="text-muted mb-0">{{item.body}}</p>
-                        </div>
-                    </div>
+                    {% for item in options %}
+                      <div class="col-lg-3 col-md-6 text-center">
+                          <div class="mt-5">
+                              <!-- <div class="mb-2">{{item.icon}}</div>
+                              <h3 class="h4 mb-2">{{item.header}}</h3> -->
+                              <!-- <p class="text-muted mb-0">{{item.body}}</p> -->
+                              <p class="text-muted mb-0">{{item}}</p>
+                          </div>
+                      </div>
                     {% endfor %}
                 </div>
             </div>
             <br/> <br/> <br/>
             <center>
-              {{page.promt}}
+              {{page.prompt}}
               <br/> <br/>
               <a class="btn btn-primary btn-xl" href="#about">Yes</a>
               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
