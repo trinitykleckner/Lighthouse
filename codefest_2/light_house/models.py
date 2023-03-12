@@ -20,7 +20,7 @@ class Page(models.Model):
         return d
 
     def getOptions(self):
-        return self.content2.split(",")
-    
+        return self.content2[5:].split(",")
+
     def __str__(self):
         return self.header

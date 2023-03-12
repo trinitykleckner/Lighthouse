@@ -15,7 +15,7 @@ def index(request):
         print('{} => {}'.format(key, value))
 
     page = Page.objects.order_by('id')[0]
-    return render(request, 'light_house/index.html', {"page":page.toDict(),"index":page.getOptions(),"language":request.session['language']}) # changed options.html to index.html (Ahmed)
+    return render(request, 'light_house/index.html', {"page":page.toDict(),"options":page.getOptions(),"language":request.session['language']}) # changed options.html to index.html (Ahmed)
     # latest_question_list = Page.objects.order_by('-id')[:5]
     # output = ', '.join([q.header for q in latest_question_list])
     # return HttpResponse(output)
@@ -26,8 +26,8 @@ def language(request):
 def options(request, index=0):
     page = Page.objects.order_by('-id')[index]
     pageDict = translateDict(page.toDict())
-    ops = map(lambda x: askGpt("translate",x,request.session['language']),page.getOptions)
-    return render(request, 'light_house/options.html', {"page":pageDict,"options":ops})
+    ops = map(lambda x: askGpt("translate",x,request.session['language']),page.getOptions())
+    return render(request, 'light_house/options.html', {"page":pageDict,"options":page.getOptions()})
 
 def endpoint(request, index):
     page = Page.objects.order_by('-id')[index]
