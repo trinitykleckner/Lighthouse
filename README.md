@@ -8,7 +8,7 @@ To use LightHouse, you can simply visit this website.
 
 ### Features
 
-The Refugee Resource Finder offers the following features:
+LightHouse offers the following features:
 
 - list1
 - list 2
