@@ -15,7 +15,7 @@ def index(request):
         print('{} => {}'.format(key, value))
 
     page = Page.objects.order_by('-id')[0]
-    return render(request, 'light_house/options.html', {"page":page.toDict(),"options":page.getOptions()})
+    return render(request, 'light_house/index.html', {"page":page.toDict(),"index":page.getOptions()}) # changed options.html to index.html (Ahmed)
     # latest_question_list = Page.objects.order_by('-id')[:5]
     # output = ', '.join([q.header for q in latest_question_list])
     # return HttpResponse(output)
