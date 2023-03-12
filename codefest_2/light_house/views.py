@@ -26,12 +26,13 @@ def language(request):
     return render(request, 'light_house/languageAndLocation.html', {})
 
 def options(request, index=0):
+    print("LANGUAGE",request.session['language'])
     request.session['index'] = index
     page = Page.objects.order_by('-id')[index]
     pageDict = page.toDict()
     ops = page.getOptions()
 
-    if request.session['language'].lower() != "english":
+    if request.session['language'] not in ["english", "null", None]:
         pageDict = translateDict(pageDict,request.session['language'])
         ops = map(lambda x: askGpt("translate",x,request.session['language']),ops)
     return render(request, 'light_house/options.html', {"page":pageDict,"options":page.getOptions(),"indexes":indexDict[index]})
@@ -39,7 +40,7 @@ def options(request, index=0):
 def endpoint(request, index):
     page = Page.objects.order_by('-id')[index]
     pageDict = page.toDict()
-    if request.session['language'] != "english":
+    if request.session['language'] not in ["english", "null", None]:
         pageDict = translateDict(pageDict,request.session['language'])
     gpt = askGpt("ask",page.content2[3:],request.session['language'])
     return render(request, 'light_house/endpoint.html', {"page":page.toDict(),"response":gpt})

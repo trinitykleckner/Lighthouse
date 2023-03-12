@@ -10,4 +10,3 @@ urlpatterns = [
     path('endpoint',views.endpoint,name='endpoint'),
     path('final',views.final,name='final'),
 ]
-
