@@ -25,7 +25,7 @@ def index(request):
 def language(request):
     return render(request, 'light_house/languageAndLocation.html', {})
 
-def options(request, index=0):
+def options(request, file, index=0):
     print("LANGUAGE",request.session['language'])
     request.session['index'] = index
     page = Page.objects.order_by('-id')[index]
@@ -35,7 +35,7 @@ def options(request, index=0):
     if request.session['language'] not in ["english", "null", None]:
         pageDict = translateDict(pageDict,request.session['language'])
         ops = map(lambda x: askGpt("translate",x,request.session['language']),ops)
-    return render(request, 'light_house/options.html', {"page":pageDict,"options":page.getOptions(),"indexes":indexDict[index]})
+    return render(request, 'light_house/'+file+'.html', {"page":pageDict,"options":page.getOptions(),"indexes":indexDict[index]})
 
 def endpoint(request, index):
     page = Page.objects.order_by('-id')[index]
@@ -47,6 +47,18 @@ def endpoint(request, index):
 
 def final(request):
     return render(request, 'light_house/final.html', {})
+
+def now(request): return options(request, "now", 1)
+def documentation(request): return options(request, "documentation", 2)
+def settling(request): return options(request, "settling", 3)
+
+def food(request): return endpoint(request, 5)
+def shelter(request): return endpoint(request, 4)
+def id(request): return endpoint(request, 6)
+def ssn(request): return endpoint(request, 7)
+def jobs(request): return endpoint(request, 8)
+def school(request): return endpoint(request, 9)
+def community(request): return endpoint(request, 10)
 
 def translateDict(dict, language):
     translated = {}
