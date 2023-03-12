@@ -1,10 +1,9 @@
-from django.shortcuts import render
-
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-
 from .models import Page
 
+import json
+import requests
 
 
 def index(request):
@@ -25,13 +24,13 @@ def language(request):
 
 def options(request, index=0):
     page = Page.objects.order_by('-id')[index]
-    pageDict = translateDict(page.toDict())
+    pageDict = translateDict(page.toDict(),request.session['language'])
     ops = map(lambda x: askGpt("translate",x,request.session['language']),page.getOptions())
     return render(request, 'light_house/options.html', {"page":pageDict,"options":page.getOptions()})
 
 def endpoint(request, index):
     page = Page.objects.order_by('-id')[index]
-    pageDict = translateDict(page.toDict())
+    pageDict = translateDict(page.toDict(),request.session['language'])
     gpt = askGpt("ask",page.content2[3:],request.session['language'])
     return render(request, 'light_house/endpoint.html', {"page":page.toDict(),"response":gpt})
 
