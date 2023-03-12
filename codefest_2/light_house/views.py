@@ -5,7 +5,10 @@ from .models import Page
 import json
 import requests
 
-
+indexDict = {0: [1,2,3],
+                 1: [4,5],
+                 2:[6,7],
+                 3:[8,9,10]}
 def index(request):
     request.session['language'] = request.GET.get("language")
     request.session['state'] = request.GET.get("state")
@@ -23,10 +26,11 @@ def language(request):
     return render(request, 'light_house/languageAndLocation.html', {})
 
 def options(request, index=0):
+    request.session['index'] = index
     page = Page.objects.order_by('-id')[index]
     pageDict = translateDict(page.toDict(),request.session['language'])
     ops = map(lambda x: askGpt("translate",x,request.session['language']),page.getOptions())
-    return render(request, 'light_house/options.html', {"page":pageDict,"options":page.getOptions()})
+    return render(request, 'light_house/options.html', {"page":pageDict,"options":page.getOptions(),"indexes":indexDict[index]})
 
 def endpoint(request, index):
     page = Page.objects.order_by('-id')[index]

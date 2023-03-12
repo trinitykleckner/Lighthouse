@@ -10,6 +10,7 @@ class Page(models.Model):
     prompt = models.CharField(max_length=1000, default="")
 
 
+
     def toDict(self):
         d = {
             "header": self.header,
