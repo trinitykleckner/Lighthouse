@@ -8,8 +8,9 @@ from .models import Page
 
 
 def index(request):
-    page = Page.objects.order_by('-id')[0]
-    return render(request, 'light_house/trial.html', {"page":page.toDict()})
+    page = Page.objects.order_by('id')[0]
+    return render(request, 'light_house/options.html', {"page":page.toDict(),"options":page.getOptions()})
+
     latest_question_list = Page.objects.order_by('-id')[:5]
     output = ', '.join([q.header for q in latest_question_list])
     return HttpResponse(output)
