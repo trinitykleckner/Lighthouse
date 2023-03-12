@@ -31,6 +31,7 @@ def options(request, index=0):
 
 def endpoint(request, index):
     page = Page.objects.order_by('-id')[index]
+    pageDict = translateDict(page.toDict())
     gpt = askGpt("ask",page.content2[3:],request.session['language'])
     return render(request, 'light_house/endpoint.html', {"page":page.toDict(),"response":gpt})
 
