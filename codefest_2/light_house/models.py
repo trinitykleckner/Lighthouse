@@ -21,3 +21,6 @@ class Page(models.Model):
 
     def getOptions(self):
         return self.content2.split(",")
+    
+    def __str__(self):
+        return self.header
