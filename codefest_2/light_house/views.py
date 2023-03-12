@@ -17,7 +17,13 @@ def index(request):
         print('{} => {}'.format(key, value))
 
     page = Page.objects.order_by('id')[0]
-    return render(request, 'light_house/index.html', {"page":page.toDict(),"options":page.getOptions(),"language":request.session['language']}) # changed options.html to index.html (Ahmed)
+    pageDict = page.toDict()
+    ops = page.getOptions()
+    if request.session['language'] not in ["english", "null", None]:
+        pageDict = translateDict(pageDict,request.session['language'])
+        ops = list(map(lambda x: askGpt("translate",x,request.session['language']),ops))
+
+    return render(request, 'light_house/index.html', {"page":pageDict,"options":ops,"language":request.session['language']}) # changed options.html to index.html (Ahmed)
     # latest_question_list = Page.objects.order_by('-id')[:5]
     # output = ', '.join([q.header for q in latest_question_list])
     # return HttpResponse(output)
@@ -35,7 +41,7 @@ def options(request, file, index=-1):
     if request.session['language'] not in ["english", "null", None]:
         pageDict = translateDict(pageDict,request.session['language'])
         ops = list(map(lambda x: askGpt("translate",x,request.session['language']),ops))
-    return render(request, 'light_house/'+file+'.html', {"page":pageDict,"options":page.getOptions(),"indexes":indexDict[index]})
+    return render(request, 'light_house/'+file+'.html', {"page":pageDict,"options":ops,"indexes":indexDict[index]})
 
 def endpoint(request, index, task="list"):
     print("HEREEEE",Page.objects.order_by('header'))
@@ -58,7 +64,7 @@ def now(request): return options(request, "now", 0)
 def documentation(request): return options(request, "documentation", 2)
 def settling(request): return options(request, "settling", 3)
 
-def food(request): return endpoint(request, 4) 
+def food(request): return endpoint(request, 4)
 def shelter(request): return endpoint(request, 5)
 def id(request): return endpoint(request, 6)
 def ssn(request): return endpoint(request, 10)
