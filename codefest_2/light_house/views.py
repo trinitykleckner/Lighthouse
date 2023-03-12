@@ -14,8 +14,8 @@ def index(request):
     for key, value in request.session.items():
         print('{} => {}'.format(key, value))
 
-    page = Page.objects.order_by('-id')[0]
-    return render(request, 'light_house/index.html', {"page":page.toDict(),"index":page.getOptions()}) # changed options.html to index.html (Ahmed)
+    page = Page.objects.order_by('id')[0]
+    return render(request, 'light_house/index.html', {"page":page.toDict(),"index":page.getOptions(),"language":request.session['language']}) # changed options.html to index.html (Ahmed)
     # latest_question_list = Page.objects.order_by('-id')[:5]
     # output = ', '.join([q.header for q in latest_question_list])
     # return HttpResponse(output)
@@ -25,7 +25,9 @@ def language(request):
 
 def options(request, index=0):
     page = Page.objects.order_by('-id')[index]
-    return render(request, 'light_house/options.html', {"page":page.toDict(),"options":page.getOptions()})
+    pageDict = translateDict(page.toDict())
+    ops = map(lambda x: askGpt("translate",x,request.session['language']),page.getOptions)
+    return render(request, 'light_house/options.html', {"page":pageDict,"options":ops})
 
 def endpoint(request, index):
     page = Page.objects.order_by('-id')[index]
@@ -34,6 +36,12 @@ def endpoint(request, index):
 
 def final(request):
     return render(request, 'light_house/final.html', {})
+
+def translateDict(dict, language):
+    translated = {}
+    for key in dict:
+        translated[key] = askGpt("translate",dict[key],language)
+    return translated
 
 def askGpt(task,content,language):
     input = {"task":task, "text":content, "language":language}
