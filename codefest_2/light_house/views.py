@@ -25,7 +25,7 @@ def index(request):
 def language(request):
     return render(request, 'light_house/languageAndLocation.html', {})
 
-def options(request, file, index=0):
+def options(request, file, index=-1):
     print("LANGUAGE",request.session['language'])
     request.session['index'] = index
     page = Page.objects.order_by('-id')[index]
@@ -34,31 +34,37 @@ def options(request, file, index=0):
 
     if request.session['language'] not in ["english", "null", None]:
         pageDict = translateDict(pageDict,request.session['language'])
-        ops = map(lambda x: askGpt("translate",x,request.session['language']),ops)
+        ops = list(map(lambda x: askGpt("translate",x,request.session['language']),ops))
     return render(request, 'light_house/'+file+'.html', {"page":pageDict,"options":page.getOptions(),"indexes":indexDict[index]})
 
-def endpoint(request, index):
-    page = Page.objects.order_by('-id')[index]
+def endpoint(request, index, task="list"):
+    print("HEREEEE",Page.objects.order_by('header'))
+    page = Page.objects.order_by('id')[index]
     pageDict = page.toDict()
     if request.session['language'] not in ["english", "null", None]:
         pageDict = translateDict(pageDict,request.session['language'])
-    gpt = askGpt("ask",page.content2[3:]+"in "+request.session['state'],request.session['language'])
+    if request.session['state'] == None:
+        gpt = askGpt(task,page.content2[4:],request.session['language'])
+    else:
+        gpt = askGpt(task,page.content2[4:]+"in "+request.session['state'],request.session['language'])
+    gpt = list(map(lambda x: x[0], gpt))
+    # print("HEREEEEE",gpt)
     return render(request, 'light_house/endpoint.html', {"page":page.toDict(),"response":gpt})
 
 def final(request):
     return render(request, 'light_house/final.html', {})
 
-def now(request): return options(request, "now", 1)
+def now(request): return options(request, "now", 0)
 def documentation(request): return options(request, "documentation", 2)
 def settling(request): return options(request, "settling", 3)
 
-def food(request): return endpoint(request, 5)
-def shelter(request): return endpoint(request, 4)
+def food(request): return endpoint(request, 4) 
+def shelter(request): return endpoint(request, 5)
 def id(request): return endpoint(request, 6)
-def ssn(request): return endpoint(request, 7)
-def jobs(request): return endpoint(request, 8)
+def ssn(request): return endpoint(request, 10)
+def jobs(request): return endpoint(request, 7)
 def school(request): return endpoint(request, 9)
-def community(request): return endpoint(request, 10)
+def community(request): return endpoint(request, 8, "ask")
 
 def translateDict(dict, language):
     translated = {}

@@ -10,6 +10,7 @@ urlpatterns = [
     # path('endpoint',views.endpoint,name='endpoint'),
     path('final',views.final,name='final'),
 
+    path('welcome',views.index),
     path('now',views.now),
     path('documentation',views.documentation),
     path('settling',views.settling),
